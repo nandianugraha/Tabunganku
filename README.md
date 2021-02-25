@@ -1,4 +1,4 @@
-# my_money
+# Tabunganku
 
 A new Flutter application.
 
