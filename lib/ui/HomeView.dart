@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_money/AppRouter.dart';
 import 'package:my_money/db/Preferences.dart';
-import 'package:my_money/input.dart';
+import 'file:///D:/new%20project/flutter/mymoney/my_money/lib/ui/InputView.dart';
+import 'package:my_money/util/AppRouter.dart';
 import 'package:my_money/util/DefaultText.dart';
 import 'package:my_money/util/Helper.dart';
 import 'package:toast/toast.dart';

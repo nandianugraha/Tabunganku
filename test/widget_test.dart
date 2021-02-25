@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_money/Home.dart';
+import 'file:///D:/new%20project/flutter/mymoney/my_money/lib/ui/HomeView.dart';
 
 import 'package:my_money/main.dart';
 

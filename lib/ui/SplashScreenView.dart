@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_money/db/Preferences.dart';
-import 'package:my_money/input.dart';
-import 'AppRouter.dart';
-import 'Home.dart';
+import '../util/AppRouter.dart';
+import 'HomeView.dart';
+import 'InputView.dart';
 
 class SplashScreenView extends StatefulWidget {
   @override

@@ -2,15 +2,15 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:my_money/AppRouter.dart';
-import 'package:my_money/Home.dart';
 import 'package:my_money/db/History.dart';
 import 'package:my_money/db/Preferences.dart';
+import 'package:my_money/ui/HomeView.dart';
+import 'package:my_money/util/AppRouter.dart';
 import 'package:my_money/util/DefaultText.dart';
 import 'package:my_money/util/Helper.dart';
 import 'package:toast/toast.dart';
 
-import 'db/DatabaseHelper.dart';
+import '../db/DatabaseHelper.dart';
 
 class NewOrder extends StatefulWidget {
   String total;
