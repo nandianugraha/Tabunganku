@@ -50,7 +50,7 @@ class _NewOrderState extends State<NewOrder> {
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
           centerTitle: true,
-          title: Text('Input Pengeluaran'),
+          title: Text('INPUT PENGELUARAN'),
           actions: [
             GestureDetector(
               onTap: () {
