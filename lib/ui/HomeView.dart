@@ -23,11 +23,13 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isStart == true ? AppBar(
-        backgroundColor: Colors.blueGrey,
-        centerTitle: true,
-        title: Text('HOME'),
-      ): null,
+      appBar: isStart == true
+          ? AppBar(
+              backgroundColor: Colors.blueGrey,
+              centerTitle: true,
+              title: Text('HOME'),
+            )
+          : null,
       body: isStart == false
           ? startNew()
           : isLoading == true
@@ -119,26 +121,26 @@ class MyAppState extends State<MyApp> {
               ),
             ),
           ),
-          Container(
-            height: 40,
-            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                border: Border.all(color: Colors.grey.withOpacity(0.5))),
-            child: FlatButton(
-              onPressed: () {
-                if (_tabunganController.text.isEmpty) {
-                  Helper.showToast(context, 'Isi total tabungan dulu',
-                      gravity: Toast.BOTTOM);
-                } else {
-                  Preferences.setId('saya');
-                  Preferences.setTabungan(_tabunganController.text);
-                  AppRouter.makeFirst(
-                      context, NewOrder(total: _tabunganController.text));
-                }
-              },
+          GestureDetector(
+            onTap: () {
+              if (_tabunganController.text.isEmpty) {
+                Helper.showToast(context, 'Isi total tabungan dulu',
+                    gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
+              } else {
+                Preferences.setId('saya');
+                Preferences.setTabungan(_tabunganController.text);
+                AppRouter.makeFirst(
+                    context, NewOrder(total: _tabunganController.text));
+              }
+            },
+            child: Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.blueGrey,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  border: Border.all(color: Colors.grey.withOpacity(0.5))),
               child: DefaultText(
                 textLabel: 'SUBMIT',
                 colorsText: Colors.white,

@@ -68,6 +68,7 @@ class _NewOrderState extends State<NewOrder> {
           ],
         ),
         body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: Center(
             child: Container(
               padding: EdgeInsets.all(16),
@@ -80,17 +81,18 @@ class _NewOrderState extends State<NewOrder> {
                     colorsText: Colors.blueGrey,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Nama Barang / Jasa'),
+                    decoration:
+                        InputDecoration(labelText: 'Nama Barang / Jasa'),
                     keyboardType: TextInputType.text,
                     controller: productNameController,
+                    maxLength: 50,
                   ),
                   TextFormField(
                     maxLength: 21,
                     decoration: InputDecoration(
-                    prefixText: 'Rp. ',
-                    labelText: 'Harga',
-                    prefixStyle: TextStyle(color: Colors.grey.shade700)),
+                        prefixText: 'Rp. ',
+                        labelText: 'Harga',
+                        prefixStyle: TextStyle(color: Colors.grey.shade700)),
                     keyboardType: TextInputType.number,
                     controller: priceController,
                   ),
@@ -103,15 +105,16 @@ class _NewOrderState extends State<NewOrder> {
                     child: GestureDetector(
                       onTap: () {
                         if (productNameController.text.isEmpty &&
-                                priceController.text.isEmpty) {
+                            priceController.text.isEmpty) {
                           Helper.showToast(context, 'Please fill the form',
-                              gravity: Toast.BOTTOM);
-                        } else if(int.parse(widget.total) <
+                              gravity: Toast.BOTTOM,
+                              duration: Toast.LENGTH_LONG);
+                        } else if (int.parse(widget.total) <
                             int.parse(priceController.text)) {
-                        Helper.showToast(context, 'Tabunganmu kurang :(',
-                        gravity: Toast.BOTTOM);
-                        }
-                        else {
+                          Helper.showToast(context, 'Tabunganmu kurang :(',
+                              gravity: Toast.BOTTOM,
+                              duration: Toast.LENGTH_LONG);
+                        } else {
                           isLoading = true;
                           setState(() {
                             date =
@@ -179,6 +182,7 @@ class _NewOrderState extends State<NewOrder> {
                               height: 700,
                               width: double.infinity,
                               child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
                                   padding: EdgeInsets.all(3),
                                   itemCount: history.length + 1,
                                   itemBuilder:
@@ -269,9 +273,18 @@ class _NewOrderState extends State<NewOrder> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: [
-                                                    DefaultText(
-                                                        textLabel:
-                                                            '${history[index].productName}'),
+                                                    SizedBox(
+                                                      width: 200,
+                                                      child: DefaultText(
+                                                          softWrap: true,
+                                                          textAlign: TextAlign.center,
+                                                          maxLines: 1,
+                                                          textOverflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                          textLabel:
+                                                              '${history[index].productName}'),
+                                                    ),
                                                     DefaultText(
                                                         textLabel: Helper
                                                             .formatCurrencyIdr(

@@ -20,6 +20,7 @@ class DefaultText extends StatefulWidget {
   final TextAlign textAlign;
   final Border border;
   final List<BoxShadow> boxShadow;
+  final bool softWrap;
 
 
   DefaultText({
@@ -39,7 +40,8 @@ class DefaultText extends StatefulWidget {
     this.textOverflow,
     this.textAlign,
     this.border,
-    this.boxShadow
+    this.boxShadow,
+    this.softWrap
 });
 
   @override
@@ -69,6 +71,7 @@ class _DefaultText extends State<DefaultText> {
         overflow: widget.textOverflow != null ? widget.textOverflow : null ,
         textAlign: widget.textAlign,
         maxLines: widget.maxLines == null ? 1 : widget.maxLines,
+        softWrap: widget.softWrap,
         style: TextStyle(
           color: widget.colorsText,
           // fontFamily: Fonts.avenir,
