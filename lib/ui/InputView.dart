@@ -51,9 +51,9 @@ class _NewOrderState extends State<NewOrder> {
           backgroundColor: Colors.blueGrey,
           centerTitle: true,
           title: Text('Input Pengeluaran'),
-          actions :[
+          actions: [
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 print('logout');
                 setState(() {
                   _deleteAll();
@@ -62,7 +62,7 @@ class _NewOrderState extends State<NewOrder> {
                 });
               },
               child: Container(
-                margin: EdgeInsets.only(right: 10),
+                  margin: EdgeInsets.only(right: 10),
                   child: Icon(Icons.exit_to_app)),
             )
           ],
@@ -79,13 +79,18 @@ class _NewOrderState extends State<NewOrder> {
                         'TOTAL TABUNGAN: ${Helper.formatCurrencyIdr(widget.total.toString())}',
                     colorsText: Colors.blueGrey,
                   ),
-                  TextField(
-                    decoration: InputDecoration(hintText: 'Product Name'),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'Nama Barang / Jasa'),
                     keyboardType: TextInputType.text,
                     controller: productNameController,
                   ),
-                  TextField(
-                    decoration: InputDecoration(hintText: 'Product Price'),
+                  TextFormField(
+                    maxLength: 21,
+                    decoration: InputDecoration(
+                    prefixText: 'Rp. ',
+                    labelText: 'Harga',
+                    prefixStyle: TextStyle(color: Colors.grey.shade700)),
                     keyboardType: TextInputType.number,
                     controller: priceController,
                   ),
@@ -98,10 +103,15 @@ class _NewOrderState extends State<NewOrder> {
                     child: GestureDetector(
                       onTap: () {
                         if (productNameController.text.isEmpty &&
-                            priceController.text.isEmpty) {
+                                priceController.text.isEmpty) {
                           Helper.showToast(context, 'Please fill the form',
                               gravity: Toast.BOTTOM);
-                        } else {
+                        } else if(int.parse(widget.total) <
+                            int.parse(priceController.text)) {
+                        Helper.showToast(context, 'Tabunganmu kurang :(',
+                        gravity: Toast.BOTTOM);
+                        }
+                        else {
                           isLoading = true;
                           setState(() {
                             date =
@@ -342,7 +352,6 @@ class _NewOrderState extends State<NewOrder> {
     final deleted = await dbHelper.deleteAll();
     print(history.toString());
     print(deleted);
-
   }
 
   //filter by date
@@ -377,10 +386,10 @@ class _NewOrderState extends State<NewOrder> {
       print('openCalendar');
       DatePicker.showDatePicker(context,
           showTitleActions: true, locale: LocaleType.id, onChanged: (date) {
-            _date = Helper.formatToDateTimetoString(date);
-            print('confirm $_date');
-            _query(_date);
-            setState(() {});
+        _date = Helper.formatToDateTimetoString(date);
+        print('confirm $_date');
+        _query(_date);
+        setState(() {});
       }, onConfirm: (date) {
         setState(() {
           isLoading = true;

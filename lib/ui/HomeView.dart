@@ -111,7 +111,7 @@ class MyAppState extends State<MyApp> {
             child: TextFormField(
               keyboardType: TextInputType.number,
               controller: _tabunganController,
-              maxLength: 10,
+              maxLength: 21,
               decoration: InputDecoration(
                 labelText: 'Tabungan',
                 prefixText: 'Rp. ',
