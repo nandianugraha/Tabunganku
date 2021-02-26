@@ -20,12 +20,12 @@ class _SplashScreenViewState extends State<SplashScreenView> {
 
   void _goRouter() {
     Preferences.getId().then((value) {
-      if (value.isNotEmpty) {
+      if (value.isEmpty || value == null || value == 'null') {
+        AppRouter.makeFirst(context, MyApp());
+      } else {
         Preferences.getTabungan().then((value) {
           AppRouter.makeFirst(context, NewOrder(total: value));
         });
-      } else {
-        AppRouter.makeFirst(context, MyApp());
       }
     });
   }

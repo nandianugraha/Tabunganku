@@ -44,12 +44,6 @@ class _NewOrderState extends State<NewOrder> {
     _queryAll();
   }
 
-  void _showMessageInScaffold(String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +56,7 @@ class _NewOrderState extends State<NewOrder> {
               onTap: (){
                 print('logout');
                 setState(() {
+                  _deleteAll();
                   Preferences.logout();
                   AppRouter.makeFirst(context, MyApp());
                 });
@@ -323,7 +318,6 @@ class _NewOrderState extends State<NewOrder> {
     hitung();
     History history = History.fromMap(row);
     final id = await dbHelper.insert(history);
-    _showMessageInScaffold('inserted row id: $id');
   }
 
   //getall
@@ -332,7 +326,6 @@ class _NewOrderState extends State<NewOrder> {
     history.clear();
     hitung();
     allRows.forEach((row) => history.add(History.fromMap(row)));
-    _showMessageInScaffold('Query done.');
     setState(() {});
   }
 
@@ -343,7 +336,13 @@ class _NewOrderState extends State<NewOrder> {
     history.forEach((element) {
       totalSisa += element.price;
     });
-    _showMessageInScaffold('deleted $rowsDeleted row(s): row $id');
+  }
+
+  void _deleteAll() async {
+    final deleted = await dbHelper.deleteAll();
+    print(history.toString());
+    print(deleted);
+
   }
 
   //filter by date
