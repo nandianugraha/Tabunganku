@@ -23,8 +23,10 @@ class NewOrder extends StatefulWidget {
 
 class _NewOrderState extends State<NewOrder> {
   TextEditingController productNameController = TextEditingController();
-
   TextEditingController priceController = TextEditingController();
+
+  TextEditingController productNameEditController = TextEditingController();
+  TextEditingController priceEditController = TextEditingController();
   bool isLoading = false;
   String date;
   int totalPengeluaran = 0;
@@ -277,7 +279,8 @@ class _NewOrderState extends State<NewOrder> {
                                                       width: 200,
                                                       child: DefaultText(
                                                           softWrap: true,
-                                                          textAlign: TextAlign.center,
+                                                          textAlign:
+                                                              TextAlign.center,
                                                           maxLines: 1,
                                                           textOverflow:
                                                               TextOverflow
@@ -294,27 +297,66 @@ class _NewOrderState extends State<NewOrder> {
                                                   ],
                                                 ),
                                               ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  isLoading = true;
-                                                  setState(() {
-                                                    _delete(history[index].id);
-                                                    hitung();
-                                                    Future.delayed(Duration(
-                                                            seconds: 1))
-                                                        .then((value) {
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      isLoading = true;
                                                       setState(() {
-                                                        isLoading = false;
+                                                        productNameEditController
+                                                                .text =
+                                                            history[index]
+                                                                .productName;
+                                                        priceEditController
+                                                                .text =
+                                                            history[index]
+                                                                .price
+                                                                .toString();
+                                                        showBottomUpdate(
+                                                            context, history[index].id, history[index].productName, history[index].price, history[index].date);
+                                                        Future.delayed(Duration(
+                                                                seconds: 1))
+                                                            .then((value) {
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
+                                                        });
+                                                        _queryAll();
                                                       });
-                                                    });
-                                                    _queryAll();
-                                                  });
-                                                },
-                                                child: Container(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Icon(Icons.cancel,
-                                                        color: Colors.red)),
+                                                    },
+                                                    child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            right: 10),
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: Icon(Icons.edit,
+                                                            color: Colors.red)),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      isLoading = true;
+                                                      setState(() {
+                                                        _delete(
+                                                            history[index].id);
+                                                        hitung();
+                                                        Future.delayed(Duration(
+                                                                seconds: 1))
+                                                            .then((value) {
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
+                                                        });
+                                                        _queryAll();
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: Icon(
+                                                            Icons.cancel,
+                                                            color: Colors.red)),
+                                                  ),
+                                                ],
                                               )
                                             ],
                                           ),
@@ -361,6 +403,7 @@ class _NewOrderState extends State<NewOrder> {
     });
   }
 
+  //deleteall
   void _deleteAll() async {
     final deleted = await dbHelper.deleteAll();
     print(history.toString());
@@ -373,6 +416,13 @@ class _NewOrderState extends State<NewOrder> {
     history.clear();
     allRows.forEach((row) => history.add(History.fromMap(row)));
     setState(() {});
+  }
+
+  //edit
+  void _update(int id, String productName, int price, String date) async {
+    // row to update
+    History history = History(id: id, productName: productName, price: price, date: date);
+    await dbHelper.update(history);
   }
 
   void hitung() async {
@@ -418,5 +468,90 @@ class _NewOrderState extends State<NewOrder> {
         });
       }, currentTime: DateTime.now());
     });
+  }
+
+  void showBottomUpdate(context, int id, String productName, int price, String date) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          var mediaQueryData = MediaQuery.of(context);
+          var paddingBottom = mediaQueryData.padding.bottom;
+          var insetBottom = mediaQueryData.viewInsets.bottom;
+          return Container(
+            padding: EdgeInsets.only(
+                top: 16,
+                left: 16,
+                right: 16,
+                bottom: paddingBottom > 0
+                    ? paddingBottom + insetBottom
+                    : 16 + insetBottom),
+            margin: EdgeInsets.fromLTRB(8, 10, 8, 10),
+            child: new Wrap(
+              children: [
+                TextFormField(
+                  decoration:
+                      InputDecoration(labelText: 'Nama Barang atau Jasa'),
+                  keyboardType: TextInputType.text,
+                  controller: productNameEditController,
+                  maxLength: 50,
+                ),
+                TextFormField(
+                  maxLength: 21,
+                  decoration: InputDecoration(
+                      prefixText: 'Rp. ',
+                      labelText: 'Harga',
+                      prefixStyle: TextStyle(color: Colors.grey.shade700)),
+                  keyboardType: TextInputType.number,
+                  controller: priceEditController,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 8),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.blueGrey,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (productNameEditController.text.isEmpty &&
+                          priceEditController.text.isEmpty) {
+                        Helper.showToast(context, 'Please fill the form',
+                            gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
+                      } else if (int.parse(widget.total) <
+                          int.parse(priceEditController.text)) {
+                        Helper.showToast(context, 'Tabunganmu kurang :(',
+                            gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
+                      } else {
+                        isLoading = true;
+                        setState(() {
+                          date =
+                              Helper.formatToDateTimetoString(DateTime.now());
+                          int price = int.parse(priceEditController.text);
+                          _update(id, productNameEditController.text, price, date);
+                          _queryAll();
+                          priceEditController.clear();
+                          productNameEditController.clear();
+                          _date = '-';
+                          Future.delayed(Duration(seconds: 1)).then((value) {
+                            setState(() {
+                              isLoading = false;
+                              AppRouter.pop(context);
+                            });
+                          });
+                        });
+                      }
+                    },
+                    child: DefaultText(
+                      padding: EdgeInsets.all(10),
+                      textLabel: "SUBMIT",
+                      colorsText: Colors.white,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 }
