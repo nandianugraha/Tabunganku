@@ -14,10 +14,19 @@ class Helper {
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
 
+  // static String formatCurrencyIdr(String value) {
+  //   try {
+  //     final formatter = new NumberFormat("#,###");
+  //     return "Rp. ${formatter.format(int.parse(value))}";
+  //   } catch (e) {
+  //     return 'Rp. 0';
+  //   }
+  // }
+
   static String formatCurrencyIdr(String value) {
     try {
-      final formatter = new NumberFormat("#,###");
-      return "Rp. ${formatter.format(int.parse(value))}";
+      final formatter = new NumberFormat.currency(symbol: '¥');
+      return " ${formatter.format(int.parse(value))}";
     } catch (e) {
       return 'Rp. 0';
     }

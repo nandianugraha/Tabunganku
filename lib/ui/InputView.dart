@@ -92,7 +92,7 @@ class _NewOrderState extends State<NewOrder> {
                   TextFormField(
                     maxLength: 21,
                     decoration: InputDecoration(
-                        prefixText: 'Rp. ',
+                        prefixText: '¥',
                         labelText: 'Harga',
                         prefixStyle: TextStyle(color: Colors.grey.shade700)),
                     keyboardType: TextInputType.number,
