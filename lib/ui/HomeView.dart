@@ -116,7 +116,7 @@ class MyAppState extends State<MyApp> {
               maxLength: 21,
               decoration: InputDecoration(
                 labelText: 'Tabungan',
-                prefixText: 'Rp. ',
+                prefixText: '¥',
                 prefixStyle: TextStyle(color: Colors.black),
               ),
             ),
